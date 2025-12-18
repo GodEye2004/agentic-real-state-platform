@@ -178,7 +178,7 @@ class AppConstants {
   static const List<String> quickReplies = [
     'آپارتمان می‌خوام',
     'ویلا می‌خوام',
-    'در تهران',
+    'مغازه میخوام',
     'معاوضه دارم',
   ];
 

@@ -29,7 +29,7 @@ class EmptyChatState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'سلام! من رضا هستم 👋',
+              'سلام من مشاورتم ',
               textDirection: TextDirection.rtl,
               style: Theme.of(
                 context,
