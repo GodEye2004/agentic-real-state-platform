@@ -398,7 +398,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _messages.isEmpty
-                ? EmptyChatState(onQuickReplyTap: _sendMessage)
+                ? EmptyChatState()
                 : MessageList(
                     scrollController: _scrollController,
                     messages: _messages,

@@ -921,17 +921,17 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     setState(() => _isSubmitting = true);
 
     try {
-      // تبدیل متن معاوضه به لیست
+      // change text to list for exchanges
       List<String> exchangeList = [];
       if (_openToExchange && _exchangePreferencesController.text.isNotEmpty) {
         exchangeList = _exchangePreferencesController.text
-            .split(RegExp(r'[,،\n]')) // جدا کردن با ویرگول یا اینتر
+            .split(RegExp(r'[,،\n]')) 
             .map((e) => e.trim())
             .where((e) => e.isNotEmpty)
             .toList();
       }
 
-      // داده‌های مورد نیاز برای ارسال به بکند
+      // data need to send it to db
       final propertyData = {
         "title": _titleController.text,
         "description": _descriptionController.text.isNotEmpty
@@ -949,18 +949,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         "has_parking": _hasParking,
         "has_elevator": _hasElevator,
         "has_storage": _hasStorage,
-        // فیلدهای جدید مربوط به معاوضه
         "open_to_exchange": _openToExchange,
         "exchange_preferences": exchangeList,
       };
 
-      // لاگ کردن اطلاعات برای دیباگ
       print('-----------------------------');
       print('Submitting Property to /properties/submit');
       print('Payload: ${json.encode(propertyData)}');
       print('-----------------------------');
 
-      // ارسال به API
+      // send to api.
       final response = await _apiService.submitProperty(propertyData);
 
       print('Server Response: $response');

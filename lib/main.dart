@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/models/models.dart';
+import 'package:flutter_application_1/services/api_service.dart';
+import 'package:flutter_application_1/widgets/chat/empty_chat_state.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:uuid/uuid.dart';
 import 'config/theme.dart';
 import 'screens/chat_screen.dart';
 
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// صفحه Splash
+// Splash
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -53,6 +57,11 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+
+  final ScrollController _scrollController = ScrollController();
+
+  bool _isLoading = false;
+  bool _isTyping = false;
 
   @override
   void initState() {
@@ -75,12 +84,40 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // انتقال به صفحه اصلی بعد از 2 ثانیه
+    // go to main page after 2 second.
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ChatScreen()),
+        MaterialPageRoute(builder: (context) => EmptyChatState()),
       );
     });
+  }
+
+  
+  void _scrollToBottom() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textDirection: TextDirection.rtl,
+          textAlign: TextAlign.right,
+        ),
+        backgroundColor: AppTheme.errorColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
   }
 
   @override
