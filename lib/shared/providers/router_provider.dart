@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_provider.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
 import 'package:flutter_application_1/featured/auth/views/login_screen.dart';
@@ -7,11 +8,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final notifier = RouterNotifier(ref);
+
   return GoRouter(
     initialLocation: '/login',
+    refreshListenable: notifier,
     redirect: (context, state) {
-      final authState = ref.read(authProvider).asData?.value;
-      final isAuthenticated = authState is Authenticated;
+      final authState = ref.read(authProvider);
+
+      // Handle loading state - stay on current page or could redirect to splash
+      if (authState.isLoading) return null;
+
+      final isAuthenticated = authState.asData?.value is Authenticated;
+
       final isLoggingIn =
           state.matchedLocation == '/login' ||
           state.matchedLocation.startsWith('/otp');
@@ -20,10 +29,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!isAuthenticated && !isLoggingIn) {
         return '/login';
       }
+
       // If authenticated and trying to access login/OTP → go to profile
       if (isAuthenticated && isLoggingIn) {
         return '/profile';
       }
+
       return null;
     },
     routes: [
@@ -42,3 +53,15 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+/// A ChangeNotifier that notifies listeners when the auth state changes.
+class RouterNotifier extends ChangeNotifier {
+  final Ref _ref;
+
+  RouterNotifier(this._ref) {
+    _ref.listen<AsyncValue<AuthState>>(
+      authProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
+}

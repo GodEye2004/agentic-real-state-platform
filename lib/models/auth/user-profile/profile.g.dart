@@ -8,12 +8,12 @@ part of 'profile.dart';
 
 _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   id: json['id'] as String,
-  phoneNumber: json['phoneNumber'] as String,
-  isVerified: json['isVerified'] as bool,
+  phoneNumber: json['phone_number'] as String,
+  isVerified: json['is_verified'] as bool,
 );
 
 Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'id': instance.id,
-  'phoneNumber': instance.phoneNumber,
-  'isVerified': instance.isVerified,
+  'phone_number': instance.phoneNumber,
+  'is_verified': instance.isVerified,
 };

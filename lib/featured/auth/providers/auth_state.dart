@@ -1,4 +1,4 @@
-import '../../../models/auth/auth-response/auth_response.dart';
+import '../../../models/auth/user-profile/profile.dart';
 
 sealed class AuthState {
   const AuthState();
@@ -13,9 +13,9 @@ class AuthLoading extends AuthState {
 }
 
 class Authenticated extends AuthState {
-  final AuthResponse authResponse;
+  final Profile profile;
 
-  const Authenticated(this.authResponse);
+  const Authenticated(this.profile);
 }
 
 class AuthUnauthenticated extends AuthState {

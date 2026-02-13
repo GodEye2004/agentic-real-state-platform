@@ -2,7 +2,7 @@
 import 'package:flutter_application_1/config/api/api_service.dart';
 import 'package:flutter_application_1/config/storage/secure_storage.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
-import 'package:flutter_application_1/models/auth/auth-response/auth_response.dart';
+import 'package:flutter_application_1/models/auth/user-profile/profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/src/framework.dart';
 
@@ -25,7 +25,7 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
       _apiService.addTokenInceptor(token);
       try {
         final userData = await _apiService.getProfile();
-        final user = AuthResponse.fromJson(userData);
+        final user = Profile.fromJson(userData);
       } catch (e) {
         // token invalid or expired
         await _secureStorage.deleteToken();
@@ -57,7 +57,7 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
 
       // fetch user profile
       final userData = await _apiService.getProfile();
-      final user = AuthResponse.fromJson(userData);
+      final user = Profile.fromJson(userData);
       state = AsyncValue.data(Authenticated(user));
     } catch (e) {
       state = AsyncValue.error(e.toString(), StackTrace.current);

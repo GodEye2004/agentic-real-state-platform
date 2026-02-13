@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/auth_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_application_1/config/theme.dart';
+import 'package:flutter_application_1/featured/auth/providers/auth_provider.dart';
+import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
+import 'package:flutter_application_1/featured/auth/widget/auth_button.dart';
+import 'package:flutter_application_1/featured/auth/widget/auth_header.dart';
+import 'package:flutter_application_1/featured/auth/widget/auth_text_field.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
   final String phoneNumber;
@@ -20,50 +26,110 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
     super.dispose();
   }
 
+  void _handleVerify() {
+    if (_otpController.text.trim().isEmpty) return;
+
+    // Dismiss keyboard
+    FocusScope.of(context).unfocus();
+
+    ref
+        .read(authProvider.notifier)
+        .verifyOtp(widget.phoneNumber, _otpController.text.trim());
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final authState = ref.watch(authProvider);
+    final authState = ref.watch(authProvider);
 
-    // // Listen to authentication state changes for navigation
-    // ref.listen<AsyncValue<AuthState>>(authProvider, (_, next) {
-    //   next.whenOrNull(
-    //     data: (state) {
-    //       if (state is Authenticated) {
-    //         Navigator.pushReplacementNamed(context, '/profile');
-    //       }
-    //     },
-    //     error: (error, stack) {
-    //       ScaffoldMessenger.of(
-    //         context,
-    //       ).showSnackBar(SnackBar(content: Text(error.toString())));
-    //     },
-    //   );
-    // });
+    // Listen to state changes for success navigation or error showing
+    ref.listen(authProvider, (previous, next) {
+      if (next.value is Authenticated) {
+        // Navigate to home or profile on success
+        // Using pushReplacement or go to avoid going back to OTP
+        context.go('/profile');
+      }
+
+      if (next.hasError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('خطا: ${next.error}'),
+            backgroundColor: AppTheme.errorColor,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify OTP')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Enter the code sent to ${widget.phoneNumber}'),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _otpController,
-              decoration: const InputDecoration(labelText: 'OTP Code'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                ref
-                    .read(authProvider.notifier)
-                    .verifyOtp(widget.phoneNumber, _otpController.text.trim());
-              },
-              child: const Text('Verify'),
-            ),
-          ],
+      backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: AppTheme.textPrimary,
+          ),
+          onPressed: () => context.pop(),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AuthHeader(
+                title: 'تکمیل احراز هویت',
+                subtitle:
+                    'کد ۴ رقمی ارسال شده به ${widget.phoneNumber} را وارد کنید',
+              ),
+
+              const SizedBox(height: 48),
+
+              AuthTextField(
+                label: 'کد تایید',
+                hint: '----',
+                controller: _otpController,
+                keyboardType: TextInputType.number,
+                prefixIcon: const Icon(
+                  Icons.lock_outline_rounded,
+                  color: AppTheme.textSecondary,
+                ),
+                textInputAction: TextInputAction.done,
+                onEditingComplete: _handleVerify,
+              ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.2, end: 0),
+
+              const SizedBox(height: 32),
+
+              AuthButton(
+                text: 'تایید و ورود',
+                isLoading: authState.isLoading,
+                onPressed: _handleVerify,
+              ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
+
+              const SizedBox(height: 24),
+
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    // Resend logic
+                    ref.read(authProvider.notifier).sendOtp(widget.phoneNumber);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('کد مجددا ارسال شد'),
+                        backgroundColor: AppTheme.secondaryColor,
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'ارسال مجدد کد',
+                    style: TextStyle(color: AppTheme.primaryColor),
+                  ),
+                ),
+              ).animate().fadeIn(delay: 800.ms),
+            ],
+          ),
         ),
       ),
     );

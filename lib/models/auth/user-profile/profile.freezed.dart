@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Profile {
 
- String get id; String get phoneNumber; bool get isVerified;
+ String get id;@JsonKey(name: 'phone_number') String get phoneNumber;@JsonKey(name: 'is_verified') bool get isVerified;
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ProfileCopyWith<$Res>  {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) _then) = _$ProfileCopyWithImpl;
 @useResult
 $Res call({
- String id, String phoneNumber, bool isVerified
+ String id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'is_verified') bool isVerified
 });
 
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  bool isVerified)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'is_verified')  bool isVerified)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
 return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  bool isVerified)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'is_verified')  bool isVerified)  $default,) {final _that = this;
 switch (_that) {
 case _Profile():
 return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phoneNumber,  bool isVerified)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'is_verified')  bool isVerified)?  $default,) {final _that = this;
 switch (_that) {
 case _Profile() when $default != null:
 return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
@@ -211,12 +211,12 @@ return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
 @JsonSerializable()
 
 class _Profile implements Profile {
-  const _Profile({required this.id, required this.phoneNumber, required this.isVerified});
+  const _Profile({required this.id, @JsonKey(name: 'phone_number') required this.phoneNumber, @JsonKey(name: 'is_verified') required this.isVerified});
   factory _Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
 @override final  String id;
-@override final  String phoneNumber;
-@override final  bool isVerified;
+@override@JsonKey(name: 'phone_number') final  String phoneNumber;
+@override@JsonKey(name: 'is_verified') final  bool isVerified;
 
 /// Create a copy of Profile
 /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract mixin class _$ProfileCopyWith<$Res> implements $ProfileCopyWith<$Res> {
   factory _$ProfileCopyWith(_Profile value, $Res Function(_Profile) _then) = __$ProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String phoneNumber, bool isVerified
+ String id,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'is_verified') bool isVerified
 });
 
 
