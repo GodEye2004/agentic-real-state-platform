@@ -26,6 +26,23 @@ class ApiService {
     }
   }
 
+  // add token inceptor
+  void addTokenInceptor(String token) {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.headers['Authorization'] = 'Bearer $token';
+          return handler.next(options);
+        },
+      ),
+    );
+  }
+
+  // clear token inceptors
+  void clearTokenInceptors() {
+    _dio.interceptors.clear();
+  }
+
   // send OTP
   Future<String> sendOtp(String phoneNumber) async {
     try {
@@ -53,12 +70,9 @@ class ApiService {
   }
 
   // get profile
-  Future<dynamic> getProfile(String token) async {
+  Future<dynamic> getProfile() async {
     try {
-      final response = await _dio.get(
-        "/profile",
-        options: Options(headers: {"Authorization": "Bearer $token"}),
-      );
+      final response = await _dio.get("/profile");
       return response.data;
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Failed to get profile');
