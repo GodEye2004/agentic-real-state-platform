@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_provider.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
+import 'package:flutter_application_1/featured/home/providers/show_properies_provider.dart';
 import 'package:flutter_application_1/featured/home/widget/home_box.dart';
+import 'package:flutter_application_1/featured/home/widget/home_property_card.dart';
 import 'package:flutter_application_1/featured/home/widget/home_searchbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -70,6 +71,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const SizedBox(height: 10),
                   // show property listings
+                  Expanded(
+                    child: ref
+                        .watch(propertiesProvider)
+                        .when(
+                          data: (PropertyResponse) {
+                            return ListView.builder(
+                              itemCount: PropertyResponse.properties.length,
+                              itemBuilder: (context, index) {
+                                final item = PropertyResponse.properties[index];
+                                return HomePropertyCard(property: item);
+                              },
+                            );
+                          },
+                          loading: () =>
+                              const Center(child: CircularProgressIndicator()),
+                          error: (err, stack) =>
+                              Center(child: Text(err.toString())),
+                        ),
+                  ),
                 ],
               ),
             );

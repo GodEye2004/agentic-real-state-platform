@@ -117,10 +117,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _Profile():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -179,10 +176,7 @@ return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'is_verified')  bool isVerified)  $default,) {final _that = this;
 switch (_that) {
 case _Profile():
-return $default(_that.id,_that.phoneNumber,_that.isVerified);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.phoneNumber,_that.isVerified);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

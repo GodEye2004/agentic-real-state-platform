@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_application_1/models/properties/propertiesResponse/properties_response.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -66,6 +67,19 @@ class ApiService {
       return response.data['access_token'];
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Failed to verify OTP');
+    }
+  }
+
+  //show properties
+  Future<PropertyResponse> showProperties() async {
+    try {
+      final response = await _dio.get('/properties');
+      print(response.data);
+      return PropertyResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception(
+        e.response?.data['message'] ?? 'Failed to show properties',
+      );
     }
   }
 
