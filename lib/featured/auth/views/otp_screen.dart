@@ -46,6 +46,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       if (next.value is Authenticated) {
         // Navigate to home or profile on success
         // Using pushReplacement or go to avoid going back to OTP
+
+        // final token = (next.value as Authenticated).token;
+
         context.go('/profile');
       }
 

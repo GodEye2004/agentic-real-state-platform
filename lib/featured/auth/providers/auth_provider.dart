@@ -26,6 +26,9 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
       try {
         final userData = await _apiService.getProfile();
         final user = Profile.fromJson(userData);
+
+        // why we use it, because we want to keep the user logged in
+        return Authenticated(user);
       } catch (e) {
         // token invalid or expired
         await _secureStorage.deleteToken();
