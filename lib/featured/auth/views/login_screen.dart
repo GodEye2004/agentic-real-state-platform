@@ -30,7 +30,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void _handleLogin() async {
     if (!_isValid) return;
 
-    // Dismiss keyboard
     FocusScope.of(context).unfocus();
 
     await ref.read(authProvider.notifier).sendOtp(_phoneController.text.trim());
@@ -67,7 +66,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const SizedBox(height: 40),
 
-              // Header Section
               const AuthHeader(
                 title: 'شروع کنید',
                 subtitle: 'برای ورود یا ثبت نام، شماره موبایل خود را وارد کنید',
@@ -75,7 +73,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               const SizedBox(height: 48),
 
-              // Form Section
               AuthTextField(
                 label: 'شماره موبایل',
                 hint: '0912xxxxxxx',
@@ -91,24 +88,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               const SizedBox(height: 32),
 
-              // Action Button
               AuthButton(
                 text: 'دریافت کد تایید',
                 isLoading: authState.isLoading,
                 onPressed: _handleLogin,
               ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
-
-              // Error Display (optional, if not handled in SnackBar)
-              if (authState.hasError)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Center(
-                    child: Text(
-                      '${authState.error}',
-                      style: const TextStyle(color: AppTheme.errorColor),
-                    ),
-                  ),
-                ).animate().fadeIn(),
             ],
           ),
         ),

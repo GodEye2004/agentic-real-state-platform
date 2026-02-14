@@ -29,7 +29,6 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   void _handleVerify() {
     if (_otpController.text.trim().isEmpty) return;
 
-    // Dismiss keyboard
     FocusScope.of(context).unfocus();
 
     ref
@@ -41,15 +40,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
-    // Listen to state changes for success navigation or error showing
     ref.listen(authProvider, (previous, next) {
       if (next.value is Authenticated) {
-        // Navigate to home or profile on success
-        // Using pushReplacement or go to avoid going back to OTP
-
-        // final token = (next.value as Authenticated).token;
-
-        context.go('/profile');
+        context.go('/home');
       }
 
       if (next.hasError) {
