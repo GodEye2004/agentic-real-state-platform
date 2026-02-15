@@ -92,4 +92,20 @@ class ApiService {
       throw Exception(e.response?.data['message'] ?? 'Failed to get profile');
     }
   }
+
+  Future<Map<String, dynamic>> submitProperty(
+    Map<String, dynamic> propertyData,
+  ) async {
+    try {
+      final response = await _dio.post(
+        "/properties/submit",
+        data: propertyData,
+      );
+      return response.data;
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to submit property: ${e.response?.data['message']}',
+      );
+    }
+  }
 }

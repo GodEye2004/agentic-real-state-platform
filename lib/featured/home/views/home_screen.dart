@@ -6,6 +6,7 @@ import 'package:flutter_application_1/featured/home/widget/home_box.dart';
 import 'package:flutter_application_1/featured/home/widget/home_property_card.dart';
 import 'package:flutter_application_1/featured/home/widget/home_searchbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -47,10 +48,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Row(
                     mainAxisAlignment: .spaceEvenly,
                     children: [
-                      HomeBox(title: 'ثبت آگهی', icon: Icon(Icons.add_sharp)),
+                      HomeBox(
+                        title: 'ثبت آگهی',
+                        icon: Icon(Icons.add_sharp),
+                        onClick: () {
+                          context.go('/property-submit');
+                        },
+                      ),
                       HomeBox(
                         title: 'چت با هوش مصنوعی',
                         icon: Icon(Icons.chat),
+                        onClick: () {},
                       ),
                     ],
                   ),

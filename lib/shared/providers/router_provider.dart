@@ -5,6 +5,7 @@ import 'package:flutter_application_1/featured/auth/views/login_screen.dart';
 import 'package:flutter_application_1/featured/auth/views/otp_screen.dart';
 import 'package:flutter_application_1/featured/auth/views/profile_screen.dart';
 import 'package:flutter_application_1/featured/home/views/home_screen.dart';
+import 'package:flutter_application_1/featured/property-submit/properties_submit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,6 +57,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ProfileScreen(),
       ),
       GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+      GoRoute(
+        path: '/property-submit',
+        builder: (context, state) => const AddPropertyScreen(),
+      ),
     ],
   );
 });
