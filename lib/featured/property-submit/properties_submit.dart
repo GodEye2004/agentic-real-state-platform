@@ -972,7 +972,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           backgroundColor: Colors.green,
         ),
       );
-      Navigator.pop(context);
+      context.go('/home');
     } catch (e) {
       print('Error submitting property: $e');
       ScaffoldMessenger.of(context).showSnackBar(

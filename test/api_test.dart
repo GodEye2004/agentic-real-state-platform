@@ -6,7 +6,7 @@ void main() {
     final api = ApiService();
 
     // final result = await api.sendOtp("09113690717");
-    await api.showProperties();
+    await api.submitProperty();
 
     // showProperties() returns void, so there's no value to print
 
