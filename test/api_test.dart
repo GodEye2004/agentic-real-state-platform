@@ -6,9 +6,9 @@ void main() {
     final api = ApiService();
 
     // final result = await api.sendOtp("09113690717");
-    await api.submitProperty();
+    final response = await api.talkToAgent('معاوضه میخوام');
 
-    // showProperties() returns void, so there's no value to print
+    // print(response);
 
   });
 }

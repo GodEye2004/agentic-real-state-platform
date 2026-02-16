@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/featured/agent/views/chat_screen.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_provider.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
 import 'package:flutter_application_1/featured/auth/views/login_screen.dart';
@@ -60,6 +61,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/property-submit',
         builder: (context, state) => const AddPropertyScreen(),
+      ),
+      GoRoute(
+        path: '/talkToAgent',
+        builder: (context, state) => const ChatPage(),
       ),
     ],
   );

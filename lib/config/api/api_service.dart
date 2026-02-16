@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_application_1/models/agentTalk/agent_talk.dart';
 import 'package:flutter_application_1/models/properties/propertiesResponse/properties_response.dart';
 
 class ApiService {
@@ -74,7 +75,6 @@ class ApiService {
   Future<PropertyResponse> showProperties() async {
     try {
       final response = await _dio.get('/properties');
-      print(response.data);
       return PropertyResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception(
@@ -106,6 +106,25 @@ class ApiService {
       throw Exception(
         'Failed to submit property: ${e.response?.data['message']}',
       );
+    }
+  }
+
+  // talk to graph in backend
+  Future<AgentTalkResponse> talkToAgent(String message) async {
+    try {
+      final response = await _dio.post("/chat", data: {"message": message});
+      print(response.data);
+
+      // Ensure the API returned a map
+      final data = response.data;
+      if (data == null || data is! Map<String, dynamic>) {
+        throw Exception('Invalid API response');
+      }
+
+      // Feed the entire map to your Freezed model
+      return AgentTalkResponse.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['message'] ?? 'Failed to talk to agent');
     }
   }
 }

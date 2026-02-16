@@ -58,7 +58,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       HomeBox(
                         title: 'چت با هوش مصنوعی',
                         icon: Icon(Icons.chat),
-                        onClick: () {},
+                        onClick: () {
+                          context.go('/talkToAgent');
+                        },
                       ),
                     ],
                   ),
