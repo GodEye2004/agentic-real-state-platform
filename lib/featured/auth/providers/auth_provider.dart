@@ -22,7 +22,7 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     // check if the token exist
     final token = await _secureStorage.getToken();
     if (token != null) {
-      _apiService.addTokenInceptor(token);
+      _apiService.setToken(token);
       try {
         final userData = await _apiService.getProfile();
         final user = Profile.fromJson(userData);
@@ -32,7 +32,8 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
       } catch (e) {
         // token invalid or expired
         await _secureStorage.deleteToken();
-        _apiService.clearTokenInceptors();
+        // _apiService.clearTokenInceptors();
+        ApiService().clearToken();
         return const AuthUnauthenticated();
       }
     }
@@ -55,8 +56,9 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     state = const AsyncValue.loading();
     try {
       final token = await _apiService.verifyOTP(phoneNumber, otp);
-      await _secureStorage.saveToke(token);
-      _apiService.addTokenInceptor(token);
+      _apiService.setToken(token);
+      await _secureStorage.saveToken(token);
+      // _apiService.addTokenInceptor(token);
 
       // fetch user profile
       final userData = await _apiService.getProfile();
@@ -71,7 +73,8 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
   Future<void> logOut() async {
     state = const AsyncValue.loading();
     await _secureStorage.deleteToken();
-    _apiService.clearTokenInceptors();
+    // _apiService.clearTokenInceptors();
+    _apiService.clearToken();
     state = const AsyncValue.data(AuthUnauthenticated());
   }
 }

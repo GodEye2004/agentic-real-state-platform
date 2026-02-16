@@ -43,6 +43,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
+                  IconButton(
+                    onPressed: () {
+                      context.go('/profile');
+                    },
+                    icon: Icon(Icons.person),
+                  ),
                   HomeSearchbox(),
                   const SizedBox(height: 20),
                   Row(

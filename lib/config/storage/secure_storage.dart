@@ -9,7 +9,7 @@ class SecureStorage {
 
   static const String _tokenKey = 'auth_token';
 
-  Future<void> saveToke(String token) async {
+  Future<void> saveToken(String token) async {
     await _storage.write(key: _tokenKey, value: token);
   }
 

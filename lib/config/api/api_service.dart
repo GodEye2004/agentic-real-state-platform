@@ -8,7 +8,20 @@ class ApiService {
 
   factory ApiService() => _instance;
 
-  ApiService._internal();
+  String? _token;
+
+  ApiService._internal() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (option, handler) {
+          if (_token != null) {
+            option.headers['Authorization'] = 'Bearer $_token';
+          }
+          return handler.next(option);
+        },
+      ),
+    );
+  }
 
   final Dio _dio = Dio(
     BaseOptions(
@@ -29,20 +42,28 @@ class ApiService {
   }
 
   // add token inceptor
-  void addTokenInceptor(String token) {
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          options.headers['Authorization'] = 'Bearer $token';
-          return handler.next(options);
-        },
-      ),
-    );
-  }
+  // void addTokenInceptor(String token) {
+  //   _dio.interceptors.add(
+  //     InterceptorsWrapper(
+  //       onRequest: (options, handler) {
+  //         options.headers['Authorization'] = 'Bearer $token';
+  //         return handler.next(options);
+  //       },
+  //     ),
+  //   );
+  // }
 
   // clear token inceptors
-  void clearTokenInceptors() {
-    _dio.interceptors.clear();
+  // void clearTokenInceptors() {
+  //   _dio.interceptors.clear();
+  // }
+
+  void setToken(String token) {
+    _token = token;
+  }
+
+  void clearToken() {
+    _token = null;
   }
 
   // send OTP
@@ -65,6 +86,7 @@ class ApiService {
         "/verify-otp",
         data: {"phone_number": phoneNumber, "code": otp},
       );
+
       return response.data['access_token'];
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? 'Failed to verify OTP');
@@ -112,18 +134,30 @@ class ApiService {
   // talk to graph in backend
   Future<AgentTalkResponse> talkToAgent(String message) async {
     try {
-      final response = await _dio.post("/chat", data: {"message": message});
+      final response = await _dio.post(
+        "/chat",
+        data: {"message": message},
+        options: Options(
+          sendTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 20),
+        ),
+      );
+
       print(response.data);
 
-      // Ensure the API returned a map
       final data = response.data;
       if (data == null || data is! Map<String, dynamic>) {
         throw Exception('Invalid API response');
       }
 
-      // Feed the entire map to your Freezed model
       return AgentTalkResponse.fromJson(data);
     } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw Exception('Request timed out after 20 seconds');
+      }
+
       throw Exception(e.response?.data['message'] ?? 'Failed to talk to agent');
     }
   }
