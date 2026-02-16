@@ -18,36 +18,37 @@ class AgentTalkResponse with _$AgentTalkResponse {
 
   factory AgentTalkResponse.fromJson(Map<String, dynamic> json) =>
       _$AgentTalkResponseFromJson(json);
-      
-        @override
-        // TODO: implement missingFields
-        List<String> get missingFields => throw UnimplementedError();
-      
-        @override
-        // TODO: implement recommendedProperties
-        List<AgentTalkProperty> get recommendedProperties => throw UnimplementedError();
-      
-        @override
-        // TODO: implement requiresInput
-        bool get requiresInput => throw UnimplementedError();
-      
-        @override
-        // TODO: implement response
-        String get response => throw UnimplementedError();
-      
-        @override
-        // TODO: implement sessionId
-        String get sessionId => throw UnimplementedError();
-      
-        @override
-        // TODO: implement state
-        String get state => throw UnimplementedError();
-      
-        @override
-        Map<String, dynamic> toJson() {
-          // TODO: implement toJson
-          throw UnimplementedError();
-        }
+
+  @override
+  // TODO: implement missingFields
+  List<String> get missingFields => throw UnimplementedError();
+
+  @override
+  // TODO: implement recommendedProperties
+  List<AgentTalkProperty> get recommendedProperties =>
+      throw UnimplementedError();
+
+  @override
+  // TODO: implement requiresInput
+  bool get requiresInput => throw UnimplementedError();
+
+  @override
+  // TODO: implement response
+  String get response => throw UnimplementedError();
+
+  @override
+  // TODO: implement sessionId
+  String get sessionId => throw UnimplementedError();
+
+  @override
+  // TODO: implement state
+  String get state => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
 }
 
 @freezed
@@ -69,58 +70,58 @@ class AgentTalkProperty with _$AgentTalkProperty {
 
   factory AgentTalkProperty.fromJson(Map<String, dynamic> json) =>
       _$AgentTalkPropertyFromJson(json);
-      
-        @override
-        // TODO: implement area
-        double get area => throw UnimplementedError();
-      
-        @override
-        // TODO: implement description
-        String get description => throw UnimplementedError();
-      
-        @override
-        // TODO: implement id
-        String get id => throw UnimplementedError();
-      
-        @override
-        // TODO: implement imageUrl
-        String? get imageUrl => throw UnimplementedError();
-      
-        @override
-        // TODO: implement location
-        String get location => throw UnimplementedError();
-      
-        @override
-        // TODO: implement matchPercentage
-        double get matchPercentage => throw UnimplementedError();
-      
-        @override
-        // TODO: implement price
-        double get price => throw UnimplementedError();
-      
-        @override
-        // TODO: implement score
-        double get score => throw UnimplementedError();
-      
-        @override
-        // TODO: implement sourceLink
-        String? get sourceLink => throw UnimplementedError();
-      
-        @override
-        // TODO: implement title
-        String get title => throw UnimplementedError();
-      
-        @override
-        Map<String, dynamic> toJson() {
-          // TODO: implement toJson
-          throw UnimplementedError();
-        }
-      
-        @override
-        // TODO: implement units
-        int? get units => throw UnimplementedError();
-      
-        @override
-        // TODO: implement vpm
-        double get vpm => throw UnimplementedError();
+
+  @override
+  // TODO: implement area
+  double get area => throw UnimplementedError();
+
+  @override
+  // TODO: implement description
+  String get description => throw UnimplementedError();
+
+  @override
+  // TODO: implement id
+  String get id => throw UnimplementedError();
+
+  @override
+  // TODO: implement imageUrl
+  String? get imageUrl => throw UnimplementedError();
+
+  @override
+  // TODO: implement location
+  String get location => throw UnimplementedError();
+
+  @override
+  // TODO: implement matchPercentage
+  double get matchPercentage => throw UnimplementedError();
+
+  @override
+  // TODO: implement price
+  double get price => throw UnimplementedError();
+
+  @override
+  // TODO: implement score
+  double get score => throw UnimplementedError();
+
+  @override
+  // TODO: implement sourceLink
+  String? get sourceLink => throw UnimplementedError();
+
+  @override
+  // TODO: implement title
+  String get title => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement units
+  int? get units => throw UnimplementedError();
+
+  @override
+  // TODO: implement vpm
+  double get vpm => throw UnimplementedError();
 }

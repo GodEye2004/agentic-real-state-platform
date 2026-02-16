@@ -27,14 +27,7 @@ class ChatNotifier extends StateNotifier<ChatState> {
     try {
       final reply = await _api.talkToAgent(message);
       state = state.copyWith(
-        messages: [
-          ...state.messages,
-          AgentTalkResponse(
-            response: reply.toString(),
-            sessionId: '',
-            state: 'bot',
-          ),
-        ],
+        messages: [...state.messages, reply],
         isLoading: false,
         error: null,
       );

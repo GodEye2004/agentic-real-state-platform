@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/featured/agent/provider/agent_provider.dart';
+import 'package:flutter_application_1/featured/agent/widget/property_card.dart';
 import 'package:flutter_application_1/models/agentTalk/agent_talk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-/// Provide a simple isUser getter for AgentTalkResponse so existing UI code compiles.
-/// Adjust the implementation if you have a different field (e.g. role, sender) to detect user messages.
+/// Extension for AgentTalkResponse
 extension AgentTalkResponseExt on AgentTalkResponse {
-  // If your model has a field like `role`, `sender` or similar, update this logic.
-  bool get isUser => false;
+  bool get isUser => state == 'user';
+  String get message => response;
 
-  // Provide a `message` getter so UI code can read text; adjust to match your model fields
-  // (e.g. `text`, `content`, `answer`) if available.
-  String get message => toString();
+  // Check if this message contains property recommendations
+  bool get hasProperties => recommendedProperties.isNotEmpty;
 }
 
 class ChatPage extends ConsumerStatefulWidget {
@@ -33,7 +31,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     ref.read(chatProvider.notifier).sendMessage(text);
     _controller.clear();
 
-    // Scroll to bottom after short delay to ensure list updates
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
@@ -50,68 +47,223 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final chatState = ref.watch(chatProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat with Agent')),
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.home_work,
+                color: Colors.blue.shade700,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'مشاور املاک',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'آنلاین',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
               itemCount: chatState.messages.length,
               itemBuilder: (context, index) {
                 final msg = chatState.messages[index];
-                final isUser = msg.isUser; // use flag from state
-                return Align(
-                  alignment:
-                      isUser ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                      color: isUser ? Colors.blue : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      msg.message,
-                      style: TextStyle(
-                        color: isUser ? Colors.white : Colors.black,
+                final isUser = msg.isUser;
+
+                return Column(
+                  children: [
+                    // Chat bubble
+                    Align(
+                      alignment: isUser
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.75,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          color: isUser ? Colors.blue.shade600 : Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(20),
+                            topRight: const Radius.circular(20),
+                            bottomLeft: Radius.circular(isUser ? 20 : 4),
+                            bottomRight: Radius.circular(isUser ? 4 : 20),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          msg.message,
+                          style: TextStyle(
+                            color: isUser ? Colors.white : Colors.black87,
+                            fontSize: 15,
+                            height: 1.4,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+
+                    // Show properties cards if available
+                    if (!isUser && msg.hasProperties)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          left: 16,
+                          right: 48,
+                        ),
+                        child: Column(
+                          children: msg.recommendedProperties
+                              .map((prop) => PropertyCard(property: prop))
+                              .toList(),
+                        ),
+                      ),
+                  ],
                 );
               },
             ),
           ),
+
+          // Loading indicator
           if (chatState.isLoading)
-            const LinearProgressIndicator(minHeight: 2),
-          if (chatState.error != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                chatState.error!,
-                style: const TextStyle(color: Colors.red),
+            Container(
+              color: Colors.white,
+              child: LinearProgressIndicator(
+                minHeight: 3,
+                backgroundColor: Colors.grey.shade200,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade600),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (_) => _send(),
+
+          // Error message
+          if (chatState.error != null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              color: Colors.red.shade50,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red.shade700,
+                    size: 20,
                   ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _send,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      chatState.error!,
+                      style: TextStyle(
+                        color: Colors.red.shade700,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          // Input area
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
                 ),
               ],
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'پیام خود را بنویسید...',
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 15,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                        ),
+                        onSubmitted: (_) => _send(),
+                        textInputAction: TextInputAction.send,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade600,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.shade600.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.send_rounded),
+                      color: Colors.white,
+                      onPressed: _send,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -10,18 +10,16 @@ class ChatState with _$ChatState {
     @Default(false) bool isLoading,
     String? error,
   }) = _ChatState;
-  
+
   @override
   // TODO: implement error
   String? get error => throw UnimplementedError();
-  
+
   @override
   // TODO: implement isLoading
   bool get isLoading => throw UnimplementedError();
-  
+
   @override
   // TODO: implement messages
   List<AgentTalkResponse> get messages => throw UnimplementedError();
-  
-
 }
