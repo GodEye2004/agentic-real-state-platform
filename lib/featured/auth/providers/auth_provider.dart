@@ -4,7 +4,6 @@ import 'package:flutter_application_1/config/storage/secure_storage.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
 import 'package:flutter_application_1/models/auth/user-profile/profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/src/framework.dart';
 
 final authProvider = AsyncNotifierProvider<AuthNotifier, AuthState>(() {
   return AuthNotifier();
