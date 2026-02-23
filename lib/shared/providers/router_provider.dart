@@ -6,6 +6,7 @@ import 'package:flutter_application_1/featured/auth/views/login_screen.dart';
 import 'package:flutter_application_1/featured/auth/views/otp_screen.dart';
 import 'package:flutter_application_1/featured/auth/views/profile_screen.dart';
 import 'package:flutter_application_1/featured/home/views/home_screen.dart';
+import 'package:flutter_application_1/featured/landing/splash_screen.dart';
 import 'package:flutter_application_1/featured/property-submit/properties_submit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +15,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final notifier = RouterNotifier(ref);
 
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/landing',
     refreshListenable: notifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
@@ -34,7 +35,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (isAuthenticated && isLoggingIn) {
-        return '/home';
+        return '/talkToAgent';
       }
 
       // If authenticated and trying to access login/OTP → go to profile
@@ -65,6 +66,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/talkToAgent',
         builder: (context, state) => const ChatPage(),
+      ),
+      GoRoute(
+        path: '/landing',
+        builder: (context, state) => const SplashScreen(),
       ),
     ],
   );

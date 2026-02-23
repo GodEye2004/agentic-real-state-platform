@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/featured/auth/providers/auth_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -17,6 +18,11 @@ class ProfileScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => ref.read(authProvider.notifier).logOut(),
+          ),
+          const SizedBox(width: 100),
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => {context.go('/talkToAgent')},
           ),
         ],
       ),

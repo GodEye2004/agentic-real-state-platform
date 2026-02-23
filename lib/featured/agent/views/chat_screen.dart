@@ -3,6 +3,7 @@ import 'package:flutter_application_1/featured/agent/provider/agent_provider.dar
 import 'package:flutter_application_1/featured/agent/widget/property_card.dart';
 import 'package:flutter_application_1/models/agentTalk/agent_talk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 /// Extension for AgentTalkResponse
 extension AgentTalkResponseExt on AgentTalkResponse {
@@ -52,40 +53,52 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         title: Row(
+          mainAxisAlignment: .spaceBetween,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.home_work,
-                color: Colors.blue.shade700,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  'مشاور املاک',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.home_work,
+                    color: Colors.blue.shade700,
+                    size: 24,
                   ),
                 ),
-                Text(
-                  'آنلاین',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                const SizedBox(width: 12),
+
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'مشاور املاک',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'آنلاین',
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
+            ),
+            IconButton(
+              onPressed: () {
+                context.go('/profile');
+              },
+              icon: Icon(Icons.person),
             ),
           ],
         ),
