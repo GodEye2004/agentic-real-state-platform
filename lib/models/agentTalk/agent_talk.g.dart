@@ -40,16 +40,16 @@ _AgentTalkProperty _$AgentTalkPropertyFromJson(Map<String, dynamic> json) =>
     _AgentTalkProperty(
       id: json['id'] as String,
       title: json['title'] as String,
-      price: (json['price'] as num).toDouble(),
-      area: (json['area'] as num).toDouble(),
-      vpm: (json['vpm'] as num).toDouble(),
-      units: (json['units'] as num?)?.toInt(),
+      price: (json['price'] as num?)?.toDouble() ?? 0,
+      area: (json['area'] as num?)?.toDouble() ?? 0,
+      vpm: (json['vpm'] as num?)?.toDouble() ?? 0,
+      units: (json['units'] as num?)?.toInt() ?? 0,
       location: json['location'] as String,
       imageUrl: json['image_url'] as String?,
       sourceLink: json['source_link'] as String?,
       description: json['description'] as String,
-      matchPercentage: (json['match_percentage'] as num).toDouble(),
-      score: (json['score'] as num).toDouble(),
+      matchPercentage: (json['match_percentage'] as num?)?.toDouble() ?? 0,
+      score: (json['score'] as num?)?.toDouble() ?? 0,
     );
 
 Map<String, dynamic> _$AgentTalkPropertyToJson(_AgentTalkProperty instance) =>
