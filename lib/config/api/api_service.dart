@@ -138,8 +138,8 @@ class ApiService {
         "/chat",
         data: {"message": message},
         options: Options(
-          sendTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 20),
+          sendTimeout: Duration.zero,
+          receiveTimeout: Duration.zero,
         ),
       );
 
